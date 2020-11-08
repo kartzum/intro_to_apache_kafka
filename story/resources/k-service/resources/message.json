@@ -1,0 +1,11 @@
+{
+  "subject": {
+    "subject_type": "send",
+    "body": {
+      "method": "email",
+      "recipients": "mrbrown@ml.ml;mrblack@ml.ml;mrwhite@ml.ml",
+      "title": "42",
+      "message": "73"
+    }
+  }
+}

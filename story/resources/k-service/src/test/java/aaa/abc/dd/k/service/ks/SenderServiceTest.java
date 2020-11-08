@@ -16,22 +16,15 @@ public class SenderServiceTest {
         try (KafkaServerService kafkaServerService = new KafkaServerService(brokerHost, brokerPort)) {
             kafkaServerService.start();
             kafkaServerService.createTopic(senderTopic);
-
             SenderService.EmailService emailService = mock(SenderService.EmailService.class);
-
             SenderService senderService = new SenderService(bootstrapServers, senderTopic, emailService);
             senderService.start();
-
-            String recipients = "recipients";
-            String title = "title";
-            String message = "message";
-
+            String recipients = "mrbrown@ml.ml;mrblack@ml.ml;mrwhite@ml.ml";
+            String title = "42";
+            String message = "73";
             kafkaServerService.send(senderTopic, key(), createMessage(EMAIL_METHOD, recipients, title, message));
-
             Thread.sleep(6000);
-
             verify(emailService).send(recipients, title, message);
-
             senderService.stop();
         }
     }
