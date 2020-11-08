@@ -27,3 +27,4 @@ See: k-service, SenderService, SenderServiceTest
 * [Apache Kafka + Spring Boot: Hello, microservices](https://habr.com/ru/post/440400/)
 * [Spring Boot + Apache Kafka и SSL в Docker контейнере](https://habr.com/ru/post/505720/)
 * [О стримах и таблицах в Kafka и Stream Processing, часть 1](https://habr.com/ru/company/skbkontur/blog/353204/)
+* [Apache Kafka и потоковая обработка данных с помощью Spark Streaming](https://habr.com/ru/post/451160/)
