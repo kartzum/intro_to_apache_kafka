@@ -9,11 +9,29 @@
 * [kafka-the-definitive](https://www.oreilly.com/library/view/kafka-the-definitive/9781491936153/ch04.html)
 * [kafka-architecture](https://data-flair.training/blogs/kafka-architecture/)
 
+## Introduction 
+
+### Clients
+
+#### Kafka Java Client
+* [java](https://docs.confluent.io/current/clients/java.html)
+
+### Kafka Python Client
+* [python](https://docs.confluent.io/current/clients/python.html)
+
+```
+pip install confluent-kafka
+```
+
+```
+conda install -c conda-forge python-confluent-kafka
+```
+
 ## Consumer
-See: fs. consumer. Common
+See: fs/consumer/Common, fs/python/ckp/consumer
 
 ## Producer
-See: fs. producer. Common
+See: fs/producer/Common, fs/python/ckp/producer
 
 ## Simple Service and Testing in java
 See: k-service, SenderService, SenderServiceTest
@@ -26,6 +44,10 @@ See: k-service, SenderService, SenderServiceTest
 * [Интеграционное тестирование в SpringBoot с TestContainers-стартером](https://habr.com/ru/company/otus/blog/514270/)
 * [A Unit Testing Practitioner's Guide to Everyday Mockito](https://www.toptal.com/java/a-guide-to-everyday-mockito)
 
+## Processing Guarantees
+* [Processing Guarantees](https://docs.confluent.io/current/streams/concepts.html#streams-concepts-processing-guarantees)
+* [exactly-once-semantics](https://www.confluent.io/blog/exactly-once-semantics-are-possible-heres-how-apache-kafka-does-it/?_ga=2.249178511.948638971.1604823182-338978087.1602507638)
+
 ## Resources
 * [kafka-streams-examples](https://github.com/confluentinc/kafka-streams-examples)
 * [Kafka и микросервисы: обзор](https://habr.com/ru/company/avito/blog/465315/)
@@ -35,3 +57,5 @@ See: k-service, SenderService, SenderServiceTest
 * [Spring Boot + Apache Kafka и SSL в Docker контейнере](https://habr.com/ru/post/505720/)
 * [О стримах и таблицах в Kafka и Stream Processing, часть 1](https://habr.com/ru/company/skbkontur/blog/353204/)
 * [Apache Kafka и потоковая обработка данных с помощью Spark Streaming](https://habr.com/ru/post/451160/)
+* [Семантика exactly-once в Apache Kafka](https://habr.com/ru/company/badoo/blog/333046/)
+* [kafka-python](https://kafka-python.readthedocs.io/en/master/index.html)
