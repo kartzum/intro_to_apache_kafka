@@ -1,4 +1,6 @@
-package aaa.abc.dd.fs.et.consumer;
+package aaa.abc.dd.fs.et.common;
+
+import java.util.function.Consumer;
 
 import kafka.admin.AdminUtils;
 import kafka.admin.RackAwareMode;
@@ -10,12 +12,16 @@ import kafka.utils.ZKStringSerializer$;
 import kafka.utils.ZkUtils;
 import kafka.zk.EmbeddedZookeeper;
 import org.I0Itec.zkclient.ZkClient;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.Duration;
+import java.util.Collections;
 import java.util.Properties;
 
 public class KafkaServerService implements AutoCloseable {
@@ -78,5 +84,35 @@ public class KafkaServerService implements AutoCloseable {
             ProducerRecord<String, String> data = new ProducerRecord<>(topic, key, value);
             senderKafkaProducer.send(data);
         }
+    }
+
+    public KafkaConsumer<String, String> createKafkaConsumerStringString(String groupId) {
+        Properties properties = new Properties();
+
+        properties.put("bootstrap.servers", brokerHost + ":" + brokerPort);
+        properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        properties.put("group.id", groupId);
+
+        properties.put("enable.auto.commit", "false");
+        properties.put("auto.offset.reset", "earliest");
+
+        return new KafkaConsumer<>(properties);
+    }
+
+    public void poll(
+            String topic,
+            String groupId,
+            int seconds,
+            int times,
+            Consumer<ConsumerRecords<String, String>> callback
+    ) {
+        KafkaConsumer<String, String> kafkaConsumer = createKafkaConsumerStringString(groupId);
+        kafkaConsumer.subscribe(Collections.singleton(topic));
+        for (int i = 0; i < times; i++) {
+            ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofSeconds(seconds));
+            callback.accept(records);
+        }
+        kafkaConsumer.close();
     }
 }

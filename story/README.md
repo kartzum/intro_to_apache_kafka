@@ -9,7 +9,13 @@
 * [kafka-the-definitive](https://www.oreilly.com/library/view/kafka-the-definitive/9781491936153/ch04.html)
 * [kafka-architecture](https://data-flair.training/blogs/kafka-architecture/)
 
-## Simple Service and Testing
+## Consumer
+See: fs. consumer. Common
+
+## Producer
+See: fs. producer. Common
+
+## Simple Service and Testing in java
 See: k-service, SenderService, SenderServiceTest
 
 ### Resources
