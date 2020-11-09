@@ -16,7 +16,7 @@
 #### Kafka Java Client
 * [java](https://docs.confluent.io/current/clients/java.html)
 
-### Kafka Python Client
+#### Kafka Python Client
 * [python](https://docs.confluent.io/current/clients/python.html)
 
 ```
