@@ -43,6 +43,7 @@ See: k-service, SenderService, SenderServiceTest
 * [IoT там, где вы не ждали. Разработка и тестирование (часть 2)](https://habr.com/ru/company/jugru/blog/502898/)
 * [Интеграционное тестирование в SpringBoot с TestContainers-стартером](https://habr.com/ru/company/otus/blog/514270/)
 * [A Unit Testing Practitioner's Guide to Everyday Mockito](https://www.toptal.com/java/a-guide-to-everyday-mockito)
+* [test-kafka-based-applications](https://medium.com/test-kafka-based-applications/https-medium-com-testing-kafka-based-applications-85d8951cec43)
 
 ## Processing Guarantees
 * [Processing Guarantees](https://docs.confluent.io/current/streams/concepts.html#streams-concepts-processing-guarantees)
