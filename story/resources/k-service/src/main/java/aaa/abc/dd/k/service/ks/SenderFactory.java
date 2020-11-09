@@ -27,7 +27,7 @@ public class SenderFactory {
         Map<String, Object> body = new HashMap<>();
         map.put(SUBJECT, subject);
         subject.put(SUBJECT_TYPE, SEND);
-        subject.put(BODY, body);
+        map.put(BODY, body);
         body.put(METHOD, method);
         body.put(RECIPIENTS, recipients);
         body.put(TITLE, title);

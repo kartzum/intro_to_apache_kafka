@@ -138,7 +138,7 @@ public class SenderService implements Service {
                 JSONObject jsonSubject = (JSONObject) jsonObject.get(SUBJECT);
                 String subjectType = jsonSubject.get(SUBJECT_TYPE).toString();
                 if (SEND.equals(subjectType)) {
-                    JSONObject jsonBody = (JSONObject) jsonSubject.get(BODY);
+                    JSONObject jsonBody = (JSONObject) jsonObject.get(BODY);
                     calculate(jsonBody);
                 }
             }
