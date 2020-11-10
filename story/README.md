@@ -49,6 +49,9 @@ See: k-service, SenderService, SenderServiceTest
 * [Processing Guarantees](https://docs.confluent.io/current/streams/concepts.html#streams-concepts-processing-guarantees)
 * [exactly-once-semantics](https://www.confluent.io/blog/exactly-once-semantics-are-possible-heres-how-apache-kafka-does-it/?_ga=2.249178511.948638971.1604823182-338978087.1602507638)
 
+## Testing
+* [relative-imports-and-unittests](https://comeroutewithme.com/2018/02/24/python-relative-imports-and-unittests-derp/)
+
 ## Resources
 * [kafka-streams-examples](https://github.com/confluentinc/kafka-streams-examples)
 * [Kafka и микросервисы: обзор](https://habr.com/ru/company/avito/blog/465315/)
