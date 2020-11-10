@@ -19,7 +19,7 @@ def acked(err, msg):
         print("Message produced: %s" % (str(msg)))
 
 
-producer.produce(topic, key="key", value="value", callback=acked)
+producer.produce(topic, key="42", value="73", callback=acked)
 
 # Wait up to 1 second for events. Callbacks will be invoked during
 # this method call if the message is acknowledged.

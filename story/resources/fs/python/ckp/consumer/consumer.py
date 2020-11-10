@@ -2,7 +2,7 @@ from confluent_kafka import Consumer, KafkaException
 import sys
 
 bootstrap_servers = "localhost:9092"
-topics = "q-data"
+topics = ["q-data"]
 
 conf = {
     "bootstrap.servers": bootstrap_servers,
