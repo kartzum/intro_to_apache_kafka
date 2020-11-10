@@ -111,6 +111,18 @@ def kafka_simple_pool():
         print(r)
 
 
+def kafka_simple_send_2():
+    connection = Factory(KafkaConnectionFactory(KafkaProvider(), "localhost:9092")).create_connection()
+    connection.send("q-data", "42", "73")
+
+
+def kafka_simple_pool_2():
+    connection = Factory(KafkaConnectionFactory(KafkaProvider(), "localhost:9092")).create_connection()
+    records = connection.pool(["q-data"], "42", 10)
+    for r in records:
+        print(r)
+
+
 def main():
     # kafka_simple_send()
     kafka_simple_pool()
