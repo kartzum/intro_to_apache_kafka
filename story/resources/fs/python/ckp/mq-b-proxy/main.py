@@ -129,3 +129,4 @@ def consume(group_id: str, topics: str, timeout: Optional[int] = 10):
 @app.get("/mq/produce")
 def produce(topic: str, key: str, value: str):
     return mq_produce(topic, key, value)
+
