@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import create_autospec
 
-from ..mq import factory as mq
+from ..mql import factory as mql
 
 
 class MessageMock:
@@ -34,10 +34,10 @@ class TestFactory(unittest.TestCase):
             producers.append(mock)
             return mock
 
-        provider = create_autospec(mq.Provider)
+        provider = create_autospec(mql.Provider)
         provider.create_producer = create_producer
-        connection_factory = mq.KafkaConnectionFactory(provider, "")
-        factory = mq.Factory(connection_factory)
+        connection_factory = mql.KafkaConnectionFactory(provider, "")
+        factory = mql.Factory(connection_factory)
         connection = factory.create_connection()
         connection.send(topic, key, value)
         producers[0].produce.assert_called_with(topic, key=key, value=value)
@@ -58,10 +58,10 @@ class TestFactory(unittest.TestCase):
             consumers.append(mock)
             return mock
 
-        provider = create_autospec(mq.Provider)
+        provider = create_autospec(mql.Provider)
         provider.create_consumer = create_consumer
-        connection_factory = mq.KafkaConnectionFactory(provider, "")
-        factory = mq.Factory(connection_factory)
+        connection_factory = mql.KafkaConnectionFactory(provider, "")
+        factory = mql.Factory(connection_factory)
         connection = factory.create_connection()
         records = connection.pool(topics, "test", 1)
         self.assertTrue(len(records) > 0)
