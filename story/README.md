@@ -36,6 +36,9 @@ See: fs/producer/Common, fs/python/ckp/producer
 ## Simple Service and Testing in java
 See: k-service, SenderService, SenderServiceTest
 
+## Streams
+* See: WordCount/WordCountTest.
+
 ### Resources
 * [kafka-for-testing](https://gist.github.com/asmaier/6465468)
 * [creating-first-apache-kafka-consumer-application](https://kafka-tutorials.confluent.io/creating-first-apache-kafka-consumer-application/kafka.html)
