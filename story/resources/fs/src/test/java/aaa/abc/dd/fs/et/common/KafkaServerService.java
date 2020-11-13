@@ -1,17 +1,18 @@
 package aaa.abc.dd.fs.et.common;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
-import kafka.admin.AdminUtils;
-import kafka.admin.RackAwareMode;
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServer;
 import kafka.utils.MockTime;
 import kafka.utils.TestUtils;
-import kafka.utils.ZKStringSerializer$;
-import kafka.utils.ZkUtils;
-import kafka.zk.EmbeddedZookeeper;
-import org.I0Itec.zkclient.ZkClient;
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.AdminClientConfig;
+import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -25,25 +26,30 @@ import java.util.Collections;
 import java.util.Properties;
 
 public class KafkaServerService implements AutoCloseable {
-    String zkHost = "127.0.0.1";
     String brokerHost;
     int brokerPort;
+    String zooKeeperHost;
+    int zooKeeperPort;
 
     KafkaServer kafkaServer;
-    ZkClient zkClient;
-    EmbeddedZookeeper zkServer;
-    ZkUtils zkUtils;
+    ZooKeeperServerService zooKeeperServerService;
 
-    public KafkaServerService(String brokerHost, int brokerPort) {
+    public KafkaServerService(
+            String brokerHost,
+            int brokerPort,
+            String zooKeeperHost,
+            int zooKeeperPort
+    ) {
         this.brokerHost = brokerHost;
         this.brokerPort = brokerPort;
+        this.zooKeeperHost = zooKeeperHost;
+        this.zooKeeperPort = zooKeeperPort;
     }
 
     public void start() {
-        zkServer = new EmbeddedZookeeper();
-        String zkConnect = zkHost + ":" + zkServer.port();
-        zkClient = new ZkClient(zkConnect, 30000, 30000, ZKStringSerializer$.MODULE$);
-        zkUtils = ZkUtils.apply(zkClient, false);
+        zooKeeperServerService = new ZooKeeperServerService(zooKeeperHost, zooKeeperPort);
+        zooKeeperServerService.start();
+        String zkConnect = zooKeeperHost + ":" + zooKeeperPort;
         Properties brokerProps = new Properties();
         brokerProps.setProperty("zookeeper.connect", zkConnect);
         brokerProps.setProperty("broker.id", "0");
@@ -62,13 +68,28 @@ public class KafkaServerService implements AutoCloseable {
     @Override
     public void close() {
         kafkaServer.shutdown();
-        zkClient.close();
-        zkServer.shutdown();
+        zooKeeperServerService.close();
     }
 
     public void createTopic(String topic) {
-        AdminUtils.createTopic(
-                zkUtils, topic, 1, 1, new Properties(), RackAwareMode.Disabled$.MODULE$);
+        createTopic(topic, 1, (short) 1, new HashMap<>());
+    }
+
+    public void createTopic(
+            String topic,
+            int partitions,
+            short replication,
+            Map<String, String> topicConfig
+    ) {
+        Properties properties = new Properties();
+        properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerHost + ":" + brokerPort);
+        try (final AdminClient adminClient = AdminClient.create(properties)) {
+            final NewTopic newTopic = new NewTopic(topic, partitions, replication);
+            newTopic.configs(topicConfig);
+            adminClient.createTopics(Collections.singleton(newTopic)).all().get();
+        } catch (final InterruptedException | ExecutionException fatal) {
+            throw new RuntimeException(fatal);
+        }
     }
 
     public KafkaProducer<String, String> createKafkaProducerStringString() {
@@ -89,13 +110,13 @@ public class KafkaServerService implements AutoCloseable {
     public KafkaConsumer<String, String> createKafkaConsumerStringString(String groupId) {
         Properties properties = new Properties();
 
-        properties.put("bootstrap.servers", brokerHost + ":" + brokerPort);
-        properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        properties.put("group.id", groupId);
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokerHost + ":" + brokerPort);
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
 
-        properties.put("enable.auto.commit", "false");
-        properties.put("auto.offset.reset", "earliest");
+        properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
+        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         return new KafkaConsumer<>(properties);
     }

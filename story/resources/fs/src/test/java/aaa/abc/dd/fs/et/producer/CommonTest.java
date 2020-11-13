@@ -10,10 +10,14 @@ public class CommonTest {
     void simple() throws InterruptedException {
         String brokerHost = "127.0.0.1";
         int brokerPort = 29092;
+        String zooKeeperHost = "127.0.0.1";
+        int zooKeeperPort = 22183;
         String bootstrapServers = brokerHost + ":" + brokerPort;
         String topic = "q-data";
         String groupId = "simple";
-        try (KafkaServerService kafkaServerService = new KafkaServerService(brokerHost, brokerPort)) {
+        try (KafkaServerService kafkaServerService = new KafkaServerService(
+                brokerHost, brokerPort, zooKeeperHost, zooKeeperPort)
+        ) {
             kafkaServerService.start();
             kafkaServerService.createTopic(topic);
 

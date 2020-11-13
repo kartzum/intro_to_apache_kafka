@@ -78,7 +78,7 @@ public class WordCount {
         streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         streamsConfiguration.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 10 * 1000);
         streamsConfiguration.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
-        streamsConfiguration.put(StreamsConfig.STATE_DIR_CONFIG, "/tmp");
+        streamsConfiguration.put(StreamsConfig.STATE_DIR_CONFIG, System.getProperty("java.io.tmpdir"));
         return streamsConfiguration;
     }
 

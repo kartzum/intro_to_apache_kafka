@@ -22,6 +22,9 @@
         <scala.version>2.12</scala.version>
         <json-simple.version>1.1.1</json-simple.version>
         <mockito-core.version>2.7.7</mockito-core.version>
+        <zookeeper.version>3.6.2</zookeeper.version>
+        <zkclient.version>0.2</zkclient.version>
+        <metrics-core.version>3.1.5</metrics-core.version>
     </properties>
 
     <dependencies>
@@ -76,12 +79,6 @@
             <artifactId>kafka_${scala.version}</artifactId>
             <version>${kafka.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka_${scala.version}</artifactId>
-            <version>${kafka.version}</version>
-            <scope>test</scope>
             <classifier>test</classifier>
         </dependency>
         <dependency>
@@ -110,6 +107,25 @@
             <version>${kafka.version}</version>
             <scope>test</scope>
             <classifier>test</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>${zookeeper.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
+            <version>${zkclient.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>${metrics-core.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
