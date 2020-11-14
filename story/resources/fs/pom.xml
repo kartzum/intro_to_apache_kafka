@@ -25,6 +25,7 @@
         <zookeeper.version>3.6.2</zookeeper.version>
         <zkclient.version>0.2</zkclient.version>
         <metrics-core.version>3.1.5</metrics-core.version>
+        <jsoup.version>1.13.1</jsoup.version>
     </properties>
 
     <dependencies>
@@ -47,6 +48,11 @@
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>${json-simple.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
         </dependency>
 
         <dependency>
