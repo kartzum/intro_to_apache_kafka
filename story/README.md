@@ -66,3 +66,7 @@ See: k-service, SenderService, SenderServiceTest
 * [Apache Kafka и потоковая обработка данных с помощью Spark Streaming](https://habr.com/ru/post/451160/)
 * [Семантика exactly-once в Apache Kafka](https://habr.com/ru/company/badoo/blog/333046/)
 * [kafka-python](https://kafka-python.readthedocs.io/en/master/index.html)
+* [public-apis](https://github.com/public-apis/public-apis)
+* [chroniclingamerica.loc.gov](https://chroniclingamerica.loc.gov/about/api/#link)
+* [geocode.xyz](https://geocode.xyz/api)
+
