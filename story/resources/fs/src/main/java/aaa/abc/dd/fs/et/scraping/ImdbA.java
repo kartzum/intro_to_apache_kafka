@@ -11,7 +11,15 @@ import java.util.Collection;
 import java.util.List;
 
 public class ImdbA {
-    public static class ImdbASimpleScraping {
+    public interface ImdbASimple {
+        Collection<ImdbAItem> scrap();
+    }
+
+    public interface ImdbASimpleFactory {
+        ImdbASimple create(String language, String startDate, String endDate, String countries);
+    }
+
+    public static class ImdbASimpleScraping implements ImdbASimple {
         private final String language;
         private final String startDate;
         private final String endDate;
@@ -24,6 +32,7 @@ public class ImdbA {
             this.countries = countries;
         }
 
+        @Override
         public Collection<ImdbAItem> scrap() {
             String url = String.format(
                     "https://www.imdb.com/search/title/?release_date=%s,%s&countries=%s",

@@ -132,7 +132,9 @@ public class KafkaServerService implements AutoCloseable {
         kafkaConsumer.subscribe(Collections.singleton(topic));
         for (int i = 0; i < times; i++) {
             ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofSeconds(seconds));
-            callback.accept(records);
+            if(!records.isEmpty()) {
+                callback.accept(records);
+            }
         }
         kafkaConsumer.close();
     }
