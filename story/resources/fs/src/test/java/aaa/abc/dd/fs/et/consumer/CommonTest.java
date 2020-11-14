@@ -1,7 +1,6 @@
 package aaa.abc.dd.fs.et.consumer;
 
 import aaa.abc.dd.fs.et.common.KafkaServerService;
-import aaa.abc.dd.fs.et.common.Service;
 import org.junit.jupiter.api.Test;
 
 public class CommonTest {
@@ -14,6 +13,7 @@ public class CommonTest {
         int zooKeeperPort = 22182;
         String bootstrapServers = brokerHost + ":" + brokerPort;
         String topic = "q-data";
+        String clientId = "simple";
         String groupId = "simple";
         try (KafkaServerService kafkaServerService = new KafkaServerService(
                 brokerHost, brokerPort, zooKeeperHost, zooKeeperPort
@@ -24,7 +24,7 @@ public class CommonTest {
             kafkaServerService.send(topic, "42", "73");
             Thread.sleep(5000);
 
-            Service service = new Common.Simple(bootstrapServers, groupId, topic);
+            Common.Simple service = new Common.Simple(bootstrapServers, clientId, groupId, topic);
             service.start();
         }
     }
