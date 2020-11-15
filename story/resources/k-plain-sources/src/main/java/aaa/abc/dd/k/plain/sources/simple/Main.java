@@ -8,9 +8,8 @@ import java.util.Properties;
 
 public class Main {
     public static void main(String[] args) {
-        run(args);
-
         // proxy();
+        run(args);
         // runMovieDirectScrapingExecutor(propertiesMovieDirectScrapingExecutor("localhost:9092", "kl", "q-data"));
     }
 
