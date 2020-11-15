@@ -96,7 +96,7 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
                 if (textElements.size() > 1) {
                     description = textElements.get(1).text();
                 }
-                Double rating = null;
+                Double rating = 0.0;
                 if (ratingElement != null) {
                     try {
                         rating = Double.parseDouble(ratingElement.attributes().get("data-value"));
