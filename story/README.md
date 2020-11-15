@@ -39,6 +39,9 @@ See: k-service, SenderService, SenderServiceTest
 ## Streams
 * See: WordCount/WordCountTest.
 
+## Plain sources
+* See: k-plain-sources.
+
 ### Resources
 * [kafka-for-testing](https://gist.github.com/asmaier/6465468)
 * [creating-first-apache-kafka-consumer-application](https://kafka-tutorials.confluent.io/creating-first-apache-kafka-consumer-application/kafka.html)
