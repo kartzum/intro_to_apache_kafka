@@ -70,3 +70,10 @@ See: k-service, SenderService, SenderServiceTest
 * [chroniclingamerica.loc.gov](https://chroniclingamerica.loc.gov/about/api/#link)
 * [geocode.xyz](https://geocode.xyz/api)
 
+## imdb
+
+### Resources
+* [IMDb Datasets](https://www.imdb.com/interfaces/)
+* [imdb-extensive-dataset](https://www.kaggle.com/stefanoleone992/imdb-extensive-dataset)
+* [hollywood-movies-visualization-recommender-system](https://www.kaggle.com/rifkyahmadsaputra/hollywood-movies-visualization-recommender-system)
+* [imdb-search](https://www.imdb.com/search/title/?release_date=2019-01-20,2019-01-21&countries=us)
