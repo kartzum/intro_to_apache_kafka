@@ -17,6 +17,10 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
     private final String endDate;
     private final String countries;
 
+    private final String baseUrl = "https://www.imdb.com";
+    private final String baseNameUrl = "https://www.imdb.com/name";
+    private final String baseTitleUrl = "https://www.imdb.com/title";
+
     public MovieDirectScrapingServiceImpl(
             String language,
             String startDate,
@@ -32,7 +36,7 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
     @Override
     public Collection<Movie> scrap() {
         String url = String.format(
-                "https://www.imdb.com/search/title/?release_date=%s,%s&countries=%s",
+                baseUrl + "/search/title/?release_date=%s,%s&countries=%s",
                 startDate, endDate, countries
         );
         List<Movie> items = new ArrayList<>();
@@ -68,7 +72,7 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
         Elements nextPageElements = doc.select(".next-page");
         if (nextPageElements.size() > 0) {
             Element hrefElement = nextPageElements.get(0);
-            return "https://www.imdb.com" + hrefElement.attributes().get("href");
+            return baseUrl + hrefElement.attributes().get("href");
         }
         return "";
     }
@@ -82,11 +86,15 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
                 Elements textElements = parentItemElement.select("p.text-muted");
                 Element ratingElement = parentItemElement.selectFirst(".ratings-imdb-rating");
                 Elements genreElements = parentItemElement.select(".genre");
-                String url = "https://www.imdb.com" + aElement.attributes().get("href");
+                Elements runtimeElements = parentItemElement.select(".runtime");
+                Elements pElements = parentItemElement.select("p");
+                String href = aElement.attributes().get("href");
+                String[] hrefParts = href.split("/");
+                String titleUrl = href;
                 String title = aElement.text();
-                String shortText = "";
+                String description = "";
                 if (textElements.size() > 1) {
-                    shortText = textElements.get(1).text();
+                    description = textElements.get(1).text();
                 }
                 Double rating = null;
                 if (ratingElement != null) {
@@ -99,7 +107,60 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
                 if (genreElements.size() > 0) {
                     genres = genreElements.get(0).text();
                 }
-                items.add(new Movie(url, title, shortText, rating, genres));
+                String titleId = "";
+                if (hrefParts.length > 1) {
+                    titleId = hrefParts[2];
+                }
+                String runtime = "";
+                if (runtimeElements.size() > 0) {
+                    runtime = runtimeElements.get(0).text();
+                }
+                StringBuilder participantIds = new StringBuilder();
+                StringBuilder participantNames = new StringBuilder();
+                StringBuilder directorIds = new StringBuilder();
+                StringBuilder directorNames = new StringBuilder();
+                if (pElements.size() > 1) {
+                    Element participantsElement = pElements.get(2);
+                    boolean firstDirectors = participantsElement.text().startsWith("Director");
+                    for (Element participantElement : participantsElement.children()) {
+                        if ("|".equals(participantElement.text())) {
+                            firstDirectors = false;
+                        }
+                        if (participantElement.attributes().hasKey("href")) {
+                            String pHref = participantElement.attributes().get("href");
+                            String[] pHrefParts = pHref.split("/");
+                            if (pHrefParts.length > 1) {
+                                if (!firstDirectors) {
+                                    participantIds.append(pHrefParts[2]);
+                                    participantIds.append("~");
+                                    participantNames.append(participantElement.text());
+                                    participantNames.append("~");
+                                } else {
+                                    directorIds.append(pHrefParts[2]);
+                                    directorIds.append("~");
+                                    directorNames.append(participantElement.text());
+                                    directorNames.append("~");
+                                }
+                            }
+                        }
+                    }
+                }
+                items.add(new Movie(
+                        titleId,
+                        titleUrl,
+                        title,
+                        description,
+                        rating,
+                        genres,
+                        runtime,
+                        baseUrl,
+                        baseNameUrl,
+                        baseTitleUrl,
+                        participantIds.toString(),
+                        participantNames.toString(),
+                        directorIds.toString(),
+                        directorNames.toString()
+                ));
             }
         }
     }

@@ -28,13 +28,37 @@ public class MovieProducerTest {
             kafkaServerService.start();
             kafkaServerService.createTopic(topic);
 
-            String movie1Url = "1";
-            String movie1Title = "2";
-            String movie1Description = "3";
-            Double movie1Rating = 4.0;
-            String movie11Genres = "5";
+            String movie1TitleId = "1";
+            String movie1TitleUrl = "2";
+            String movie1Title = "3";
+            String movie1Description = "4";
+            Double movie1Rating = 5.0;
+            String movie1Genres = "6";
+            String movie1Runtime = "7";
+            String movie1BaseUrl = "8";
+            String movie1BaseNameUrl = "9";
+            String movie1BaseTitleUrl = "10";
+            String movie1Ids = "11";
+            String movie1Names = "12";
+            String movie1DirectorIds = "13";
+            String movie1DirectorNames = "14";
             MovieDirectScrapingService movieDirectScrapingServiceImpl = () -> Collections.singleton(
-                    new Data.Movie(movie1Url, movie1Title, movie1Description, movie1Rating, movie11Genres)
+                    new Data.Movie(
+                            movie1TitleId,
+                            movie1TitleUrl,
+                            movie1Title,
+                            movie1Description,
+                            movie1Rating,
+                            movie1Genres,
+                            movie1Runtime,
+                            movie1BaseUrl,
+                            movie1BaseNameUrl,
+                            movie1BaseTitleUrl,
+                            movie1Ids,
+                            movie1Names,
+                            movie1DirectorIds,
+                            movie1DirectorNames
+                    )
             );
             MovieProducer movieProducer =
                     new MovieProducer(bootstrapServers, clientId, topic, movieDirectScrapingServiceImpl);
@@ -51,7 +75,7 @@ public class MovieProducerTest {
                     e.printStackTrace();
                 }
                 assertNotNull(jsonObject);
-                assertEquals(jsonObject.get("url"), movie1Url);
+                assertEquals(jsonObject.get("title_url"), movie1TitleUrl);
             });
 
             Thread.sleep(5000);
