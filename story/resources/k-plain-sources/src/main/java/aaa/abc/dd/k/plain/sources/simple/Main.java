@@ -1,5 +1,6 @@
 package aaa.abc.dd.k.plain.sources.simple;
 
+import aaa.abc.dd.k.plain.sources.simple.common.ConnectionUtils;
 import aaa.abc.dd.k.plain.sources.simple.imdb.MovieDirectScrapingExecutor;
 import org.apache.commons.cli.*;
 
@@ -8,6 +9,8 @@ import java.util.Properties;
 public class Main {
     public static void main(String[] args) {
         run(args);
+
+        // proxy();
         // runMovieDirectScrapingExecutor(propertiesMovieDirectScrapingExecutor("localhost:9092", "kl", "q-data"));
     }
 
@@ -73,5 +76,15 @@ public class Main {
         properties.setProperty("client-id", clientId);
         properties.setProperty("topic", topic);
         return properties;
+    }
+
+    static void proxy() {
+        String authUser = System.getenv("k.auth.user");
+        String authPassword = System.getenv("k.auth.password");
+        String httpProxyHost = System.getenv("k.http.proxy.host");
+        String httpProxyPort = System.getenv("k.http.proxy.port");
+        String httpsProxyHost = System.getenv("k.https.proxy.host");
+        String httpsProxyPort = System.getenv("k.https.proxy.port");
+        ConnectionUtils.proxy(authUser, authPassword, httpProxyHost, httpProxyPort, httpsProxyHost, httpsProxyPort);
     }
 }
