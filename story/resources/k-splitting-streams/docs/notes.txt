@@ -1,3 +1,8 @@
 ---
 https://kafka-tutorials.confluent.io/split-a-stream-of-events-into-substreams/kstreams.html
 ---
+kafka-topics --create --topic i --bootstrap-server broker:9092 --replication-factor 1 --partitions 1
+kafka-topics --create --topic d --bootstrap-server broker:9092 --replication-factor 1 --partitions 1
+kafka-topics --create --topic f --bootstrap-server broker:9092 --replication-factor 1 --partitions 1
+kafka-topics --create --topic o --bootstrap-server broker:9092 --replication-factor 1 --partitions 1
+---

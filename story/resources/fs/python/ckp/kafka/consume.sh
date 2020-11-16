@@ -6,4 +6,4 @@ K_CONSUMER_L=$K_CONSUMER" --bootstrap-server localhost:9092"
 
 K_TOPIC="q-data"
 
-$K_CONSUMER_L --topic $K_TOPIC
+$K_CONSUMER_L --topic $K_TOPIC --property print.key=true --property key.separator=":"

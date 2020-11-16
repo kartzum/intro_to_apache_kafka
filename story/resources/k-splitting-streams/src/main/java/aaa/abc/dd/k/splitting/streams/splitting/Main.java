@@ -17,6 +17,7 @@ public class Main {
 
     public static void main(String[] args) {
         run(args);
+        // tests();
     }
 
     static void run(String[] args) {
@@ -52,7 +53,7 @@ public class Main {
     }
 
     static void run(Properties config) {
-        log.info(config.getProperty("bootstrap.servers"));
+        SplitStream.run(config);
     }
 
     static Properties prepareConfig(Properties config) {
@@ -63,6 +64,21 @@ public class Main {
         Properties properties = new Properties();
         properties.setProperty("bootstrap.servers", "localhost:9092");
         return properties;
+    }
+
+    static void tests() {
+        test1();
+    }
+
+    static void test1() {
+        Properties config = new Properties();
+        config.setProperty("application.id", "splitting-app");
+        config.setProperty("bootstrap.servers", "localhost:9092");
+        config.setProperty("input.topic.name", "i");
+        config.setProperty("output.drama.topic.name", "d");
+        config.setProperty("output.fantasy.topic.name", "f");
+        config.setProperty("output.other.topic.name", "o");
+        run(config);
     }
 
     static Properties buildPropertiesFromConfigFile(final String configFile) throws IOException {
