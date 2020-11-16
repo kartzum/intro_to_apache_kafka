@@ -2,4 +2,4 @@
 
 SCRIPT_DIR=$(dirname "$0")
 
-sudo docker-compose up -d
+sudo docker-compose exec broker bash
