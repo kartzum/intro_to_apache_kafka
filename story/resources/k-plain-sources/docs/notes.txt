@@ -1,0 +1,8 @@
+---
+./start_zookeeper.sh
+./start_kafka.sh
+./consume.sh
+---
+chmod 777 ./target/run_plain.sh
+./target/run_plain.sh
+---

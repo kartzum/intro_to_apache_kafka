@@ -1,89 +1,101 @@
 package aaa.abc.dd.k.plain.sources.simple;
 
-import aaa.abc.dd.k.plain.sources.simple.common.ConnectionUtils;
 import aaa.abc.dd.k.plain.sources.simple.imdb.MovieDirectScrapingExecutor;
 import org.apache.commons.cli.*;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.Properties;
+
+import static aaa.abc.dd.k.plain.sources.simple.common.ConnectionUtils.applyProxy;
 
 public class Main {
     public static void main(String[] args) {
-        // proxy();
+        applyProxy();
         run(args);
-        // runMovieDirectScrapingExecutor(propertiesMovieDirectScrapingExecutor("localhost:9092", "kl", "q-data"));
     }
 
     static void run(String[] args) {
         Options opts = new Options();
-        opts.addOption(Option.builder("o")
-                .longOpt("option")
+        opts.addOption(Option.builder("c")
+                .longOpt("config-file")
                 .hasArg()
-                .desc("Option")
+                .desc("Java properties file with configurations")
                 .build());
-        opts.addOption(Option.builder("b")
-                .longOpt("bootstrap-servers")
-                .hasArg()
-                .desc("Kafka cluster bootstrap server string (ex: broker:9092)")
-                .build());
-        opts.addOption(Option.builder("l")
-                .longOpt("client-id")
-                .hasArg()
-                .desc("Kafka client-id")
-                .build());
-        opts.addOption(Option.builder("p")
-                .longOpt("topic")
-                .hasArg()
-                .desc("Kafka topic")
-                .build());
+        opts.addOption(Option.builder("h").longOpt("help").hasArg(false).desc("Show usage information").build());
         CommandLine cl;
         try {
             cl = new DefaultParser().parse(opts, args);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        if (cl != null) {
-            String option = cl.getOptionValue("option", "imdb-d-p-s");
-            switch (option) {
-                case "imdb-m-d-s-e":
-                    String bootstrapServers = cl.getOptionValue("bootstrap-servers", "localhost:9092");
-                    String clientId = cl.getOptionValue("client-id", "kl");
-                    String topic = cl.getOptionValue("topic", "q-data");
-                    Properties properties = propertiesMovieDirectScrapingExecutor(
-                            bootstrapServers,
-                            clientId,
-                            topic
-                    );
-                    runMovieDirectScrapingExecutor(properties);
-                    break;
-            }
+        if (cl.hasOption("h")) {
+            final HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("Application help", opts);
+        } else {
+            Properties config = Optional.ofNullable(cl.getOptionValue("config-file", null))
+                    .map(path -> {
+                        try {
+                            return buildPropertiesFromConfigFile(path);
+                        } catch (final IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
+                    .orElse(defaultProperties());
+
+            run(prepareConfig(config));
         }
     }
 
-    static void runMovieDirectScrapingExecutor(Properties properties) {
-        MovieDirectScrapingExecutor movieDirectScrapingExecutor =
-                new MovieDirectScrapingExecutor(properties);
-        movieDirectScrapingExecutor.run();
+    static void run(Properties config) {
+        String optionName = config.getProperty("option.name", "imdb-m-d-s-e");
+        if ("imdb-m-d-s-e".equals(optionName)) {
+            MovieDirectScrapingExecutor movieDirectScrapingExecutor =
+                    new MovieDirectScrapingExecutor(config);
+            movieDirectScrapingExecutor.run();
+        }
     }
 
-    static Properties propertiesMovieDirectScrapingExecutor(
-            String bootstrapServers,
-            String clientId,
-            String topic
-    ) {
+    static Properties prepareConfig(Properties config) {
+        return config;
+    }
+
+    static Properties defaultProperties() {
         Properties properties = new Properties();
-        properties.setProperty("bootstrap-servers", bootstrapServers);
-        properties.setProperty("client-id", clientId);
-        properties.setProperty("topic", topic);
+        properties.setProperty("application.id", "simple-app");
+        properties.setProperty("client.id", "simple-app");
+        properties.setProperty("bootstrap.servers", "localhost:9092");
+        properties.setProperty("output.topic.name", "q-data");
+        properties.setProperty("option.name", "imdb-m-d-s-e");
         return properties;
     }
 
-    static void proxy() {
-        String authUser = System.getenv("k.auth.user");
-        String authPassword = System.getenv("k.auth.password");
-        String httpProxyHost = System.getenv("k.http.proxy.host");
-        String httpProxyPort = System.getenv("k.http.proxy.port");
-        String httpsProxyHost = System.getenv("k.https.proxy.host");
-        String httpsProxyPort = System.getenv("k.https.proxy.port");
-        ConnectionUtils.proxy(authUser, authPassword, httpProxyHost, httpProxyPort, httpsProxyHost, httpsProxyPort);
+    static void tests() {
+        test1();
+    }
+
+    static void test1() {
+        Properties config = new Properties();
+        config.setProperty("application.id", "simple-app");
+        config.setProperty("client.id", "simple-app");
+        config.setProperty("bootstrap.servers", "localhost:9092");
+        config.setProperty("output.topic.name", "q-data");
+        config.setProperty("option.name", "imdb-m-d-s-e");
+        run(config);
+    }
+
+    static Properties buildPropertiesFromConfigFile(final String configFile) throws IOException {
+        if (!Files.exists(Paths.get(configFile))) {
+            throw new IOException(configFile + " not found.");
+        }
+        final Properties properties = new Properties();
+        try (InputStream inputStream = new FileInputStream(configFile)) {
+            properties.load(inputStream);
+        }
+        return properties;
     }
 }

@@ -3,6 +3,8 @@ package aaa.abc.dd.k.plain.sources.simple.imdb;
 import aaa.abc.dd.k.plain.sources.simple.common.SimpleStringStringProducer;
 import org.json.simple.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.*;
 
 public class MovieProducer {
@@ -45,11 +47,23 @@ public class MovieProducer {
                 map.put("participant_names", move.participantNames);
                 map.put("director_ids", move.directorIds);
                 map.put("director_names", move.directorNames);
+                map.put("source", "imdb");
                 String value = JSONObject.toJSONString(map);
-                String key = UUID.randomUUID().toString();
+                String key = move.titleId; // UUID.randomUUID().toString();
                 kvList.add(new SimpleStringStringProducer.KeyValueStringString(key, value));
+                // toFile("/tmp/" + key + ".json", value);
             }
             producer.produce(kvList);
+        }
+    }
+
+    static void toFile(String fileName, String data) {
+        try {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+                writer.write(data);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

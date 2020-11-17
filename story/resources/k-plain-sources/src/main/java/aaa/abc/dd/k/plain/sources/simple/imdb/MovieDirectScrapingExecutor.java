@@ -51,9 +51,9 @@ public class MovieDirectScrapingExecutor {
             String endDate,
             String countries
     ) {
-        String bootstrapServers = properties.getProperty("bootstrap-servers");
-        String clientId = properties.getProperty("client-id");
-        String topic = properties.getProperty("topic");
+        String bootstrapServers = properties.getProperty("bootstrap.servers");
+        String clientId = properties.getProperty("client.id");
+        String topic = properties.getProperty("output.topic.name");
 
         MovieDirectScrapingService movieDirectScrapingService =
                 new MovieDirectScrapingServiceImpl(language, startDate, endDate, countries);

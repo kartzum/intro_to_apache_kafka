@@ -31,4 +31,15 @@ public class ConnectionUtils {
 
         Ssl2.disableSSLCertificateChecking();
     }
+
+    public static void applyProxy() {
+        String authUser = System.getenv("k_auth_user");
+        String authPassword = System.getenv("k_auth_password");
+        String httpProxyHost = System.getenv("k_http_proxy_host");
+        String httpProxyPort = System.getenv("k_http_proxy_port");
+        String httpsProxyHost = System.getenv("k_https_proxy_host");
+        String httpsProxyPort = System.getenv("k_https_proxy_port");
+        ConnectionUtils.proxy(
+                authUser, authPassword, httpProxyHost, httpProxyPort, httpsProxyHost, httpsProxyPort);
+    }
 }
