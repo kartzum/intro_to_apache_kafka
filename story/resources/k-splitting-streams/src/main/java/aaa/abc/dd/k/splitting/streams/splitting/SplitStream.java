@@ -46,7 +46,7 @@ public class SplitStream {
         SplitStream splitStream = new SplitStream(config);
         splitStream.buildStreams(builder);
         Topology topology = builder.build();
-        KafkaStreams streams = new KafkaStreams(topology, config);
+        KafkaStreams streams = new KafkaStreams(topology, splitStream.buildStreamsProperties());
         CountDownLatch latch = new CountDownLatch(1);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             streams.close();

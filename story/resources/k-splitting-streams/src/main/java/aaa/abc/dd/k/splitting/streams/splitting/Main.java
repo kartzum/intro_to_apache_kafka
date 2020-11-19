@@ -53,7 +53,10 @@ public class Main {
     }
 
     static void run(Properties config) {
-        SplitStream.run(config);
+        String optionName = config.getProperty("option.name", "split-stream");
+        if("split-stream".equals(optionName)) {
+            SplitStream.run(config);
+        }
     }
 
     static Properties prepareConfig(Properties config) {
@@ -62,7 +65,13 @@ public class Main {
 
     static Properties defaultProperties() {
         Properties properties = new Properties();
+        properties.setProperty("application.id", "splitting-app");
         properties.setProperty("bootstrap.servers", "localhost:9092");
+        properties.setProperty("input.topic.name", "i");
+        properties.setProperty("output.drama.topic.name", "d");
+        properties.setProperty("output.fantasy.topic.name", "f");
+        properties.setProperty("output.other.topic.name", "o");
+        properties.setProperty("option.name", "split-stream");
         return properties;
     }
 
@@ -78,6 +87,7 @@ public class Main {
         config.setProperty("output.drama.topic.name", "d");
         config.setProperty("output.fantasy.topic.name", "f");
         config.setProperty("output.other.topic.name", "o");
+        config.setProperty("option.name", "split-stream");
         run(config);
     }
 
