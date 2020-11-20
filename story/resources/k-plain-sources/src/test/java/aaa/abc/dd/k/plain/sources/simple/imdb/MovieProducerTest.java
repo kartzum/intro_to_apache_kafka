@@ -42,6 +42,8 @@ public class MovieProducerTest {
             String movie1Names = "12";
             String movie1DirectorIds = "13";
             String movie1DirectorNames = "14";
+            String movie1Ranks = "15";
+            String movie1participantCountMovies = "16";
             MovieDirectScrapingService movieDirectScrapingServiceImpl = () -> Collections.singleton(
                     new Data.Movie(
                             movie1TitleId,
@@ -57,7 +59,9 @@ public class MovieProducerTest {
                             movie1Ids,
                             movie1Names,
                             movie1DirectorIds,
-                            movie1DirectorNames
+                            movie1DirectorNames,
+                            movie1Ranks,
+                            movie1participantCountMovies
                     )
             );
             MovieProducer movieProducer =

@@ -16,6 +16,8 @@ public class Data {
         public final String participantNames;
         public final String directorIds;
         public final String directorNames;
+        public final String participantRanks;
+        public final String participantCountMovies;
 
         public Movie(
                 String titleId,
@@ -31,7 +33,9 @@ public class Data {
                 String participantIds,
                 String participantNames,
                 String directorIds,
-                String directorNames
+                String directorNames,
+                String participantRanks,
+                String participantCountMovies
         ) {
             this.titleId = titleId;
             this.titleUrl = titleUrl;
@@ -47,6 +51,36 @@ public class Data {
             this.participantNames = participantNames;
             this.directorIds = directorIds;
             this.directorNames = directorNames;
+            this.participantRanks = participantRanks;
+            this.participantCountMovies = participantCountMovies;
+        }
+    }
+
+    public static class MovieLink {
+        public final String titleId;
+        public final String titleUrl;
+        public final String title;
+
+        public MovieLink(String titleId, String titleUrl, String title) {
+            this.titleId = titleId;
+            this.titleUrl = titleUrl;
+            this.title = title;
+        }
+    }
+
+    public static class Participant {
+        public final String nmId;
+        public final String nmUrl;
+        public final String name;
+        public final MovieLink[] movieLinks;
+        public final String meterRank;
+
+        public Participant(String nmId, String nmUrl, String name, MovieLink[] movieLinks, String meterRank) {
+            this.nmId = nmId;
+            this.nmUrl = nmUrl;
+            this.name = name;
+            this.movieLinks = movieLinks;
+            this.meterRank = meterRank;
         }
     }
 }

@@ -1,6 +1,8 @@
 package aaa.abc.dd.k.plain.sources.simple.imdb;
 
 import aaa.abc.dd.k.plain.sources.simple.imdb.Data.Movie;
+import aaa.abc.dd.k.plain.sources.simple.imdb.Data.Participant;
+import aaa.abc.dd.k.plain.sources.simple.imdb.Data.MovieLink;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,6 +18,7 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
     private final String startDate;
     private final String endDate;
     private final String countries;
+    private final Integer countMovies;
 
     private final String baseUrl = "https://www.imdb.com";
     private final String baseNameUrl = "https://www.imdb.com/name";
@@ -25,12 +28,14 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
             String language,
             String startDate,
             String endDate,
-            String countries
+            String countries,
+            Integer countMovies
     ) {
         this.language = language;
         this.startDate = startDate;
         this.endDate = endDate;
         this.countries = countries;
+        this.countMovies = countMovies;
     }
 
     @Override
@@ -62,7 +67,10 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
             e.printStackTrace();
         }
         if (doc != null) {
-            collectItems(doc, items);
+            boolean next = collectItems(doc, items);
+            if (!next) {
+                return "";
+            }
             return nextUrl(doc);
         }
         return "";
@@ -77,7 +85,7 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
         return "";
     }
 
-    void collectItems(Document doc, List<Movie> items) {
+    boolean collectItems(Document doc, List<Movie> items) {
         Elements itemElements = doc.select("h3.lister-item-header");
         for (Element itemElement : itemElements) {
             Element aElement = itemElement.selectFirst("a");
@@ -119,6 +127,9 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
                 StringBuilder participantNames = new StringBuilder();
                 StringBuilder directorIds = new StringBuilder();
                 StringBuilder directorNames = new StringBuilder();
+                List<String> participantIdsStore = new ArrayList<>();
+                StringBuilder participantRanks = new StringBuilder();
+                StringBuilder participantCountMovies = new StringBuilder();
                 if (pElements.size() > 1) {
                     Element participantsElement = pElements.get(2);
                     boolean firstDirectors = participantsElement.text().startsWith("Director");
@@ -135,6 +146,7 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
                                     participantIds.append("~");
                                     participantNames.append(participantElement.text());
                                     participantNames.append("~");
+                                    participantIdsStore.add(pHrefParts[2]);
                                 } else {
                                     directorIds.append(pHrefParts[2]);
                                     directorIds.append("~");
@@ -143,6 +155,13 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
                                 }
                             }
                         }
+                    }
+                    for (String participantId : participantIdsStore) {
+                        Participant participant = scrapParticipant(baseUrl, participantId, language);
+                        participantRanks.append(participant.meterRank);
+                        participantRanks.append("~");
+                        participantCountMovies.append(participant.movieLinks.length);
+                        participantCountMovies.append("~");
                     }
                 }
                 items.add(new Movie(
@@ -159,10 +178,57 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
                         participantIds.toString(),
                         participantNames.toString(),
                         directorIds.toString(),
-                        directorNames.toString()
+                        directorNames.toString(),
+                        participantRanks.toString(),
+                        participantCountMovies.toString()
                 ));
+                if (countMovies != null && items.size() >= countMovies) {
+                    return false;
+                }
             }
         }
+        return true;
+    }
+
+    static Participant scrapParticipant(String baseUrl, String id, String language) {
+        String url = String.format(baseUrl + "/name/%s", id);
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(url).header("Accept-Language", language).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        List<Data.MovieLink> movieLinksInner = new ArrayList<>();
+        String nameInner = "";
+        String meterRank = "";
+        if (doc != null) {
+            Elements nameElements = doc.select("span.itemprop");
+            if (nameElements.size() > 0) {
+                nameInner = nameElements.get(0).text();
+            }
+            Elements itemElements = doc.select("div.filmo-category-section");
+            if (itemElements.size() > 0) {
+                Element itemElement = itemElements.get(0);
+                Elements moviesElements = itemElement.select(".filmo-row");
+                for (Element movieElement : moviesElements) {
+                    Elements hrefElements = movieElement.select("a");
+                    if (hrefElements.size() > 0) {
+                        Element hrefElement = hrefElements.get(0);
+                        String[] pHrefParts = hrefElement.attr("href").split("/");
+                        String tileId = pHrefParts[2];
+                        String tileUrl = hrefElement.attr("href");
+                        String title = hrefElement.text();
+                        MovieLink movieLink = new MovieLink(tileId, tileUrl, title);
+                        movieLinksInner.add(movieLink);
+                    }
+                }
+            }
+            Element meterRankElement = doc.getElementById("meterRank");
+            meterRank = meterRankElement.text();
+        }
+        MovieLink[] movieLinks = new MovieLink[movieLinksInner.size()];
+        movieLinks = movieLinksInner.toArray(movieLinks);
+        return new Participant(id, url, nameInner, movieLinks, meterRank);
     }
 
     public static void main(String[] args) {
@@ -171,12 +237,19 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
 
     static void tests() {
         test1();
+        // test2();
     }
 
     static void test1() {
         MovieDirectScrapingService movieDirectScrapingService =
-                new MovieDirectScrapingServiceImpl("en", "2019-01-20", "2019-01-21", "us");
+                new MovieDirectScrapingServiceImpl("en", "2019-01-20", "2019-01-20", "us", 7);
         Collection<Movie> movies = movieDirectScrapingService.scrap();
         System.out.println(movies.size());
+    }
+
+    static void test2() {
+        Participant participant =
+                scrapParticipant("https://www.imdb.com", "nm1573253", "en");
+        System.out.println(participant.name);
     }
 }
