@@ -5,9 +5,11 @@ import java.util.List;
 public class Data {
     public static class FeatureDescriptor {
         public final String source;
+        public final String key;
 
-        public FeatureDescriptor(String source) {
+        public FeatureDescriptor(String source, String key) {
             this.source = source;
+            this.key = key;
         }
     }
 

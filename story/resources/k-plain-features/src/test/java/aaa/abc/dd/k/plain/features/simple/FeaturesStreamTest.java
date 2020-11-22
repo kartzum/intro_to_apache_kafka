@@ -39,11 +39,14 @@ public class FeaturesStreamTest {
             TestOutputTopic<String, String> outputTopic =
                     testDriver.createOutputTopic(featuresStream.featuresDescriptor.sinkSource, stringDeserializer, stringDeserializer);
 
-            String key = "1";
+            String key = "k";
+            int j = 0;
             for (Map.Entry<String, TestInputTopic<String, String>> e : inputTopics.entrySet()) {
                 Map<String, Object> map = new HashMap<>();
-                map.put(e.getKey(), "value");
+                map.put("m", "v");
+                map.put("t_" + (j + 1), e.getKey());
                 e.getValue().pipeInput(key, JSONObject.toJSONString(map));
+                j++;
             }
 
             List<TestRecord<String, String>> testRecords = outputTopic.readRecordsToList();
@@ -70,12 +73,24 @@ public class FeaturesStreamTest {
         assertNotNull(jsonObjectResult);
     }
 
+    @Test
+    public void testMapper() {
+        FeaturesStream.KeyValueMapperSimple mapper =
+                new FeaturesStream.KeyValueMapperSimple("b");
+        Map<String, Object> map = new HashMap<>();
+        map.put("b", "b_key");
+        String json = JSONObject.toJSONString(map);
+        KeyValue<String, String> keyValue = mapper.apply("a", json);
+        assertEquals("b_key", keyValue.key);
+    }
+
     Properties prepareConfig() {
         Properties properties = new Properties();
         properties.setProperty("application.id", APP_ID);
         properties.setProperty("bootstrap.servers", "localhost:9091");
         properties.setProperty("option.name", DEFAULT_OPTION_NAME);
         properties.setProperty(FEATURES_DESCRIPTOR_FEATURE_DESCRIPTORS_SOURCES, "a,b,c");
+        properties.setProperty(FEATURES_DESCRIPTOR_FEATURE_DESCRIPTORS_KEYS, "m,m,m");
         properties.setProperty(FEATURES_DESCRIPTOR_SINK_SOURCE, "o");
         return properties;
     }

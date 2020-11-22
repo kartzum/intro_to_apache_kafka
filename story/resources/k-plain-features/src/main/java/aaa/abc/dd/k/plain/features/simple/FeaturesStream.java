@@ -4,10 +4,7 @@ import aaa.abc.dd.k.plain.features.simple.Data.*;
 
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.KafkaStreams;
-import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.*;
 import org.apache.kafka.streams.kstream.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,8 +16,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
-import static aaa.abc.dd.k.plain.features.simple.Constants.FEATURES_DESCRIPTOR_FEATURE_DESCRIPTORS_SOURCES;
-import static aaa.abc.dd.k.plain.features.simple.Constants.FEATURES_DESCRIPTOR_SINK_SOURCE;
+import static aaa.abc.dd.k.plain.features.simple.Constants.*;
 
 public class FeaturesStream {
     final Properties envProps;
@@ -47,7 +43,10 @@ public class FeaturesStream {
         List<KStream<String, String>> streams = new ArrayList<>();
 
         for (FeatureDescriptor featureDescriptor : featuresDescriptor.featureDescriptors) {
-            streams.add(builder.stream(featureDescriptor.source, Consumed.with(stringSerde, stringSerde)));
+            KStream<String, String> stream =
+                    builder.stream(featureDescriptor.source, Consumed.with(stringSerde, stringSerde))
+                            .map(new KeyValueMapperSimple(featureDescriptor.key));
+            streams.add(stream);
         }
 
         if (streams.size() > 0) {
@@ -86,6 +85,7 @@ public class FeaturesStream {
                 object1 = jsonParser.parse(value1);
                 object2 = jsonParser.parse(value2);
             } catch (ParseException e) {
+                e.printStackTrace();
             }
             if (object1 != null && object2 != null) {
                 JSONObject jsonObject1 = (JSONObject) object1;
@@ -97,13 +97,41 @@ public class FeaturesStream {
         }
     }
 
+    static class KeyValueMapperSimple implements KeyValueMapper<String, String, KeyValue<String, String>> {
+        private final String keyFiledNamed;
+
+        KeyValueMapperSimple(String keyFiledNamed) {
+            this.keyFiledNamed = keyFiledNamed;
+        }
+
+        @Override
+        public KeyValue<String, String> apply(String key, String value) {
+            JSONParser jsonParser = new JSONParser();
+            Object object = null;
+            try {
+                object = jsonParser.parse(value);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            JSONObject jsonObject = (JSONObject) object;
+            String newKey = key;
+            if (jsonObject != null) {
+                newKey = jsonObject.get(keyFiledNamed).toString();
+            }
+            return new KeyValue<>(newKey, value);
+        }
+    }
+
     public static FeaturesDescriptor createFromProperties(Properties properties) {
         String sources = properties.getProperty(FEATURES_DESCRIPTOR_FEATURE_DESCRIPTORS_SOURCES);
+        String keys = properties.getProperty(FEATURES_DESCRIPTOR_FEATURE_DESCRIPTORS_KEYS);
         String singSource = properties.getProperty(FEATURES_DESCRIPTOR_SINK_SOURCE);
         String[] sourcesArray = sources.split(",");
+        String[] keysArray = keys.split(",");
         List<FeatureDescriptor> featureDescriptors = new ArrayList<>();
-        for (String source : sourcesArray) {
-            FeatureDescriptor featureDescriptor = new FeatureDescriptor(source);
+        for (int i = 0; i < sourcesArray.length; i++) {
+            FeatureDescriptor featureDescriptor =
+                    new FeatureDescriptor(sourcesArray[i], keysArray[i]);
             featureDescriptors.add(featureDescriptor);
         }
         return new FeaturesDescriptor(featureDescriptors, singSource);

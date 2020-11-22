@@ -1,3 +1,11 @@
 ---
 https://kafka.apache.org/20/documentation/streams/developer-guide/dsl-api.html#join-co-partitioning-requirements
 ---
+https://kafka-tutorials.confluent.io/join-a-stream-to-a-table/kstreams.html#create-a-test-configuration-file
+---
+https://kafka-tutorials.confluent.io/join-a-stream-to-a-stream/ksql.html
+---
+https://docs.confluent.io/3.2.2/streams/developer-guide/processor-api.html#streams-developer-guide-processor-api
+---
+https://docs.confluent.io/platform/current/streams/developer-guide/dsl-api.html
+---
