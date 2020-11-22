@@ -12,11 +12,11 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Properties;
 
+import static aaa.abc.dd.k.plain.features.simple.Constants.APP_ID;
+import static aaa.abc.dd.k.plain.features.simple.Constants.DEFAULT_OPTION_NAME;
+
 public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
-
-    private static final String APP_ID = "plain-features-app";
-    private static final String DEFAULT_OPTION_NAME = "plain-features";
 
     public static void main(String[] args) {
         run(args);
