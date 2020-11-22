@@ -19,6 +19,7 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
     private final String endDate;
     private final String countries;
     private final Integer countMovies;
+    private final boolean scrapParticipants;
 
     private final String baseUrl = "https://www.imdb.com";
     private final String baseNameUrl = "https://www.imdb.com/name";
@@ -29,13 +30,15 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
             String startDate,
             String endDate,
             String countries,
-            Integer countMovies
+            Integer countMovies,
+            boolean scrapParticipants
     ) {
         this.language = language;
         this.startDate = startDate;
         this.endDate = endDate;
         this.countries = countries;
         this.countMovies = countMovies;
+        this.scrapParticipants = scrapParticipants;
     }
 
     @Override
@@ -156,12 +159,14 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
                             }
                         }
                     }
-                    for (String participantId : participantIdsStore) {
-                        Participant participant = scrapParticipant(baseUrl, participantId, language);
-                        participantRanks.append(participant.meterRank);
-                        participantRanks.append("~");
-                        participantCountMovies.append(participant.movieLinks.length);
-                        participantCountMovies.append("~");
+                    if (scrapParticipants) {
+                        for (String participantId : participantIdsStore) {
+                            Participant participant = scrapParticipant(baseUrl, participantId, language);
+                            participantRanks.append(participant.meterRank);
+                            participantRanks.append("~");
+                            participantCountMovies.append(participant.movieLinks.length);
+                            participantCountMovies.append("~");
+                        }
                     }
                 }
                 items.add(new Movie(
@@ -242,7 +247,7 @@ public class MovieDirectScrapingServiceImpl implements MovieDirectScrapingServic
 
     static void test1() {
         MovieDirectScrapingService movieDirectScrapingService =
-                new MovieDirectScrapingServiceImpl("en", "2019-01-20", "2019-01-20", "us", 7);
+                new MovieDirectScrapingServiceImpl("en", "2019-01-20", "2019-01-20", "us", 7, false);
         Collection<Movie> movies = movieDirectScrapingService.scrap();
         System.out.println(movies.size());
     }

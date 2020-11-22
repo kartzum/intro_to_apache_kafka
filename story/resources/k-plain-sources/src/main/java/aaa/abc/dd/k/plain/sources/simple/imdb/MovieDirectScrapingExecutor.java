@@ -56,7 +56,7 @@ public class MovieDirectScrapingExecutor {
         String topic = properties.getProperty("output.topic.name");
 
         MovieDirectScrapingService movieDirectScrapingService =
-                new MovieDirectScrapingServiceImpl(language, startDate, endDate, countries, null);
+                new MovieDirectScrapingServiceImpl(language, startDate, endDate, countries, null, false);
         MovieProducer movieProducer =
                 new MovieProducer(bootstrapServers, clientId, topic, movieDirectScrapingService);
 
