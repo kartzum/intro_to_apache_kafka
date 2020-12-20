@@ -125,7 +125,7 @@ public class FeaturesStream {
     public static FeaturesDescriptor createFromProperties(Properties properties) {
         String sources = properties.getProperty(FEATURES_DESCRIPTOR_FEATURE_DESCRIPTORS_SOURCES);
         String keys = properties.getProperty(FEATURES_DESCRIPTOR_FEATURE_DESCRIPTORS_KEYS);
-        String singSource = properties.getProperty(FEATURES_DESCRIPTOR_SINK_SOURCE);
+        String sinkSource = properties.getProperty(FEATURES_DESCRIPTOR_SINK_SOURCE);
         String[] sourcesArray = sources.split(",");
         String[] keysArray = keys.split(",");
         List<FeatureDescriptor> featureDescriptors = new ArrayList<>();
@@ -134,7 +134,7 @@ public class FeaturesStream {
                     new FeatureDescriptor(sourcesArray[i], keysArray[i]);
             featureDescriptors.add(featureDescriptor);
         }
-        return new FeaturesDescriptor(featureDescriptors, singSource);
+        return new FeaturesDescriptor(featureDescriptors, sinkSource);
     }
 
     public static void run(Properties config) {
