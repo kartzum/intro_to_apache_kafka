@@ -22,3 +22,7 @@ Links
 ---
 spark_python_basic
 ---
+pyspark examples
+
+https://sparkbyexamples.com/pyspark/pyspark-create-dataframe-from-list/
+---
