@@ -1,0 +1,17 @@
+---
+Installation & Start
+
+1) https://apache-mirror.rbc.ru/pub/apache/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz
+2) https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#specifying-a-location-for-an-environment
+conda create --prefix ./sp python=3.7
+source activate /data/py_venvs/sp
+3)
+PYTHONUNBUFFERED=1;PYTHONPATH=/data/spark/spark-3.0.1-bin-hadoop2.7/python:/data/spark/spark-3.0.1-bin-hadoop2.7/python/lib/py4j-0.10.9-src.zip;SPARK_HOME=/data/spark/spark-3.0.1-bin-hadoop2.7
+---
+Links
+
+* https://spark.apache.org/news/spark-3-0-0-released.html
+* https://i.stack.imgur.com/XMuHo.png
+* https://github.com/AlexIoannides/pyspark-example-project
+* https://sparkbyexamples.com/spark/spark-streaming-with-kafka/
+---
