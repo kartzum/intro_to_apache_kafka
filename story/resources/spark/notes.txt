@@ -15,3 +15,5 @@ Links
 * https://github.com/AlexIoannides/pyspark-example-project
 * https://sparkbyexamples.com/spark/spark-streaming-with-kafka/
 ---
+spark_python_basic
+---

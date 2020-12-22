@@ -43,7 +43,7 @@ See: k-service, SenderService, SenderServiceTest
 * See: k-plain-sources.
 
 ## Spark. Spark+Python Basic
-* See: sp_basic
+* See: spark_python_basic
 
 ### Resources
 * [kafka-for-testing](https://gist.github.com/asmaier/6465468)
