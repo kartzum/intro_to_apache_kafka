@@ -35,3 +35,9 @@ pyspark examples
 https://sparkbyexamples.com/pyspark/pyspark-create-dataframe-from-list/
 https://medium.com/@mrpowers/creating-a-pyspark-project-with-pytest-pyenv-and-egg-files-d2709eb1604c
 ---
+testing
+
+https://blog.ippon.tech/testing-strategy-for-spark-streaming/
+https://dzone.com/articles/distributed-spark-streaming-pyspark
+https://sparkbyexamples.com/pyspark/pyspark-row-using-rdd-dataframe/
+---
