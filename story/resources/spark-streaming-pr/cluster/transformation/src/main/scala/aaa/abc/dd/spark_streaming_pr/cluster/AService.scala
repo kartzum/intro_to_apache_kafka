@@ -16,7 +16,7 @@ object AService {
     def predict(ds: InputDStream[Row]): Unit
   }
 
-  class AService extends Train with Predict {
+  class AService(val initialWeights: org.apache.spark.mllib.linalg.Vector) extends Train with Predict {
     var model: StreamingLinearRegressionWithSGD = _
 
     def train(ds: InputDStream[Row]): Unit = {
@@ -29,10 +29,9 @@ object AService {
         })
 
       model = new StreamingLinearRegressionWithSGD()
-        .setInitialWeights(Vectors.zeros(3))
-        .setNumIterations(2)
-        .setStepSize(0.1)
-        .setMiniBatchFraction(0.25)
+        .setInitialWeights(initialWeights)
+        .setStepSize(0.01)
+        .setMiniBatchFraction(0.5)
 
       model.trainOn(dsLabeled)
 

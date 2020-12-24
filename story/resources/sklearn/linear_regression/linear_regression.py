@@ -14,7 +14,8 @@ def simple():
     model = linear_model.LinearRegression()
     model.fit(X, y)
 
-    print(model.predict(np.array([[3, 5]])))  # array([16.])
+    print(model.predict(np.array([[3, 5]])))  # [16.]
+    print(model.predict(np.array([[4, 6]])))  # [19.]
 
     if save:
         dump(model, "model.data")

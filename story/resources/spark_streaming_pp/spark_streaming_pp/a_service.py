@@ -6,7 +6,7 @@ from pyspark.mllib.regression import LabeledPoint
 class AService:
 
     def __init__(self, initial_weights):
-        self.model = StreamingLinearRegressionWithSGD()
+        self.model = StreamingLinearRegressionWithSGD(stepSize=0.01, miniBatchFraction=0.5)
         self.model.setInitialWeights(initial_weights)
 
     def train(self, ds):

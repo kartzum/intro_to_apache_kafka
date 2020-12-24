@@ -11,7 +11,7 @@ from spark_streaming_pp import a_service
 
 class RunTest(unittest.TestCase):
     def test_run(self):
-        service = a_service.AService([0.0, 0.0, 0.0])
+        service = a_service.AService([0.0, 0.0])
 
         self.train(service)
 
@@ -20,23 +20,24 @@ class RunTest(unittest.TestCase):
     def train(self, service):
         sc, ssc = self.init()
 
-        t1 = sc.parallelize([(1.0, 0.1, 0.2, 0.3)])
-        t2 = sc.parallelize([(2.0, 0.0, 0.0, 0.3)])
-        t3 = sc.parallelize([(3.0, 0.0, 0.2, 0.3)])
+        t1 = sc.parallelize([(6.0, 1.0, 1.0)])
+        t2 = sc.parallelize([(8.0, 1.0, 2.0)])
+        t3 = sc.parallelize([(9.0, 2.0, 2.0)])
+        t4 = sc.parallelize([(11.0, 2.0, 3.0)])
 
-        service.train(ssc.queueStream([t1, t2, t3]))
+        service.train(ssc.queueStream([t1, t2, t3, t4]))
 
         ssc.start()
 
-        sleep(2)
+        sleep(6)
 
         ssc.stop(stopSparkContext=True, stopGraceFully=True)
 
     def predict(self, service):
         sc, ssc = self.init()
 
-        p1 = sc.parallelize([(1.0, 0.1, 0.2, 0.3)])
-        p2 = sc.parallelize([(2.0, 0.3, 0.1, 0.2)])
+        p1 = sc.parallelize([(1.0, 3.0, 5.0)])
+        p2 = sc.parallelize([(2.0, 4.0, 6.0)])
 
         service.predict(ssc.queueStream([p1, p2]))
 
@@ -45,6 +46,9 @@ class RunTest(unittest.TestCase):
         sleep(2)
 
         ssc.stop(stopSparkContext=True, stopGraceFully=True)
+
+        # (1.0, 14.413198433589915)
+        # (2.0, 17.89063947283449)
 
     def init(self):
         sc = SparkContext()
