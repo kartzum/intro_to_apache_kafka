@@ -43,7 +43,22 @@ See: k-service, SenderService, SenderServiceTest
 * See: k-plain-sources.
 
 ## Spark. Spark+Python Basic
-* See: spark_python_basic
+* See: spark_python_basic, spark-scala-basic
+* See: spark-streaming-pr, spark_streaming_pp
+
+### Spark Streaming
+* https://scikit-learn.org/stable/auto_examples/linear_model/plot_ols.html
+* https://github.com/apache/spark/blob/master/examples/src/main/python/streaming/queue_stream.py
+* https://github.com/apache/spark/blob/master/examples/src/main/python/mllib/streaming_linear_regression_example.py
+
+### How to prepare
+* Install virtual environment with python 3.7
+* Add: numpy, scikit-learn
+* Download spark: https://spark.apache.org/downloads.html
+
+### How to run python tests in IDE
+* PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.9-src.zip;SPARK_HOME=/Users/$USER/Documents/spark/spark-3.0.1-bin-hadoop2.7
+* Add spark classes to IDE
 
 ### Resources
 * [kafka-for-testing](https://gist.github.com/asmaier/6465468)
