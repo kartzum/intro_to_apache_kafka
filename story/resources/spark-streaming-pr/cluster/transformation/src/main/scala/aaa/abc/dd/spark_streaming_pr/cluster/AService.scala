@@ -34,7 +34,9 @@ object AService {
 
       r.foreachRDD(d => {
         d.foreach(v => {
+          // scalastyle:off println
           println("Results: " + v._1 + ": " + v._2)
+          // scalastyle:on println
         })
       })
 
