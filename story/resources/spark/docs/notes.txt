@@ -35,6 +35,20 @@ pyspark examples
 https://sparkbyexamples.com/pyspark/pyspark-create-dataframe-from-list/
 https://medium.com/@mrpowers/creating-a-pyspark-project-with-pytest-pyenv-and-egg-files-d2709eb1604c
 https://stackoverflow.com/questions/42887621/how-to-do-prediction-with-sklearn-model-inside-spark
+
+---
+pyspark streaming
+
+https://mvnrepository.com/artifact/org.apache.spark/spark-sql-kafka-0-10_2.11/2.4.4
+https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.11/2.4.4/spark-sql-kafka-0-10_2.11-2.4.4.jar
+
+https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients/2.4.0
+https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/2.4.0/kafka-clients-2.4.0.jar
+
+https://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html
+https://hackersandslackers.com/structured-streaming-in-pyspark/
+https://mtpatter.github.io/bilao/notebooks/html/01-spark-struct-stream-kafka.html
+https://github.com/apache/spark/blob/master/examples/src/main/python/streaming/sql_network_wordcount.py
 ---
 testing
 
