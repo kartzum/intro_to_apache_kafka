@@ -9,11 +9,11 @@ import org.apache.spark.streaming.dstream.InputDStream
 
 import scala.collection.mutable
 
-class AServiceSuite extends fixture.FunSuite with Matchers {
+class DStreamServiceSuite extends fixture.FunSuite with Matchers {
   test("run") { spark =>
     val ssc = new StreamingContext(spark.sparkContext, Seconds(1))
 
-    val service = new AService(Vectors.zeros(2))
+    val service = new DStreamService(Vectors.zeros(2))
 
     val trainData = mutable.Queue[RDD[Row]]()
     val trainDStream: InputDStream[Row] = ssc.queueStream(trainData)

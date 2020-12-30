@@ -18,7 +18,9 @@ class BatchService extends Train with Predict {
     r.select("label", "prediction")
       .collect()
       .foreach { case Row(label: Double, prediction: Double) =>
+        // scalastyle:off println
         println(s"($label) -> prediction=$prediction")
+        // scalastyle:on println
       }
   }
 }

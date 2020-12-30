@@ -8,7 +8,7 @@ import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.mllib.regression.{LabeledPoint, StreamingLinearRegressionWithSGD}
 import org.apache.spark.sql.Row
 
-class AService(val initialWeights: org.apache.spark.mllib.linalg.Vector) extends Train with Predict {
+class DStreamService(val initialWeights: org.apache.spark.mllib.linalg.Vector) extends Train with Predict {
   var model: StreamingLinearRegressionWithSGD = _
 
   def train(ds: DStream[Row]): Unit = {
