@@ -1,6 +1,9 @@
 package aaa.abc.dd.spark_streaming_pr.cluster
 
-class BService {
+class StructuredStreamingService {
+  def train(): Unit = {
+  }
+
   def predict(): Unit = {
   }
 }

@@ -4,6 +4,9 @@ import aaa.abc.dd.spark_streaming_pr.cluster.Batch._
 import org.apache.spark.ml.regression.{LinearRegression, LinearRegressionModel}
 import org.apache.spark.sql.{DataFrame, Row}
 
+// https://spark.apache.org/docs/latest/ml-classification-regression.html#linear-regression
+// https://spark.apache.org/docs/latest/ml-pipeline.html
+
 class BatchService extends Train with Predict {
   var service: LinearRegression = _
   var model: LinearRegressionModel = _

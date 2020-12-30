@@ -6,12 +6,12 @@ from time import sleep
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 
-from spark_streaming_pp import a_service
+from spark_streaming_pp import d_stream_service
 
 
 class RunTest(unittest.TestCase):
     def test_run(self):
-        service = a_service.AService([0.0, 0.0])
+        service = d_stream_service.DStreamService([0.0, 0.0])
 
         self.train(service)
 

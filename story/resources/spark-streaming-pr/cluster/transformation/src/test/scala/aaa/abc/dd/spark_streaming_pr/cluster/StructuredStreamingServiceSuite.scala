@@ -3,7 +3,7 @@ package aaa.abc.dd.spark_streaming_pr.cluster
 import org.apache.spark.sql.SparkSession
 import org.scalatest.{Matchers, Outcome, fixture}
 
-class BServiceSuite extends fixture.FunSuite with Matchers {
+class StructuredStreamingServiceSuite extends fixture.FunSuite with Matchers {
   /*test("run") { spark =>
 
   }*/

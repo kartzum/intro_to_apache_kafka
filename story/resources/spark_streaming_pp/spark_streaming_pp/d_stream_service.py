@@ -3,7 +3,7 @@ from pyspark.mllib.linalg import Vectors
 from pyspark.mllib.regression import LabeledPoint
 
 
-class AService:
+class DStreamService:
 
     def __init__(self, initial_weights):
         self.model = StreamingLinearRegressionWithSGD(stepSize=0.01, miniBatchFraction=0.5)
