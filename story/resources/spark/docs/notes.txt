@@ -37,6 +37,10 @@ https://medium.com/@mrpowers/creating-a-pyspark-project-with-pytest-pyenv-and-eg
 https://stackoverflow.com/questions/42887621/how-to-do-prediction-with-sklearn-model-inside-spark
 
 ---
+spark streaming
+
+https://spark.apache.org/docs/latest/streaming-kafka-0-10-integration.html
+---
 pyspark streaming
 
 https://mvnrepository.com/artifact/org.apache.spark/spark-sql-kafka-0-10_2.11/2.4.4
