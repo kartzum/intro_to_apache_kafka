@@ -2,24 +2,24 @@ package aaa.abc.dd.spark_streaming_pr.cluster
 
 import org.apache.spark.mllib.linalg
 import org.apache.spark.mllib.linalg.Vectors
-import org.apache.spark.streaming.dstream.{DStream, InputDStream}
+import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.mllib.regression.{LabeledPoint, StreamingLinearRegressionWithSGD}
 import org.apache.spark.sql.Row
 
 object AService {
 
   trait Train {
-    def train(ds: InputDStream[Row]): Unit
+    def train(ds: DStream[Row]): Unit
   }
 
   trait Predict {
-    def predict(ds: InputDStream[Row]): Unit
+    def predict(ds: DStream[Row]): Unit
   }
 
   class AService(val initialWeights: org.apache.spark.mllib.linalg.Vector) extends Train with Predict {
     var model: StreamingLinearRegressionWithSGD = _
 
-    def train(ds: InputDStream[Row]): Unit = {
+    def train(ds: DStream[Row]): Unit = {
       val dsLabeled: DStream[LabeledPoint] =
         ds.map(r => {
           val values = r.toSeq
@@ -37,7 +37,7 @@ object AService {
 
     }
 
-    def predict(ds: InputDStream[Row]): Unit = {
+    def predict(ds: DStream[Row]): Unit = {
       val dsLabeled: DStream[(Double, linalg.Vector)] =
         ds.map(r => {
           val values = r.toSeq
