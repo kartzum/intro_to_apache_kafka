@@ -1,7 +1,7 @@
 ---
 
 Local - local_service.py, local_service_test.py
-Batch
+Batch - batch_service.py, batch_service_test.py
 DStream - d_stream_service.py, d_stream_service_test.py
 StructuredStreaming
 ---
