@@ -12,6 +12,15 @@ import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 
 object DStreams {
+
+  trait Train {
+    def train(ds: DStream[Row]): Unit
+  }
+
+  trait Predict {
+    def predict(ds: DStream[Row]): Unit
+  }
+
   def createKafkaInputDStream(streamingContext: StreamingContext,
                               bootstrapServers: String,
                               groupId: String,
