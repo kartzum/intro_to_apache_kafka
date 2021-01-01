@@ -5,6 +5,10 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.execution.streaming.MemoryStream
 import org.scalatest.{Matchers, Outcome, fixture}
 
+// https://bartoszgajda.com/2020/04/13/testing-spark-structured-streaming-using-memorystream/
+// https://towardsdatascience.com/apache-spark-stream-reading-data-from-local-http-server-d37e90e70fb0
+// https://stackoverflow.com/questions/56894068/how-to-perform-unit-testing-on-spark-structured-streaming
+
 class StructuredStreamingServiceSuite extends fixture.FunSuite with Matchers {
   test("run") { spark =>
     // Prepare data.

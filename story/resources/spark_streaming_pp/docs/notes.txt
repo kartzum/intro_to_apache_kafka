@@ -3,5 +3,5 @@
 Local - local_service.py, local_service_test.py
 Batch - batch_service.py, batch_service_test.py
 DStream - d_stream_service.py, d_stream_service_test.py
-StructuredStreaming
+StructuredStreaming - structure_streaming_service.py, structure_streaming_service_test.py
 ---
