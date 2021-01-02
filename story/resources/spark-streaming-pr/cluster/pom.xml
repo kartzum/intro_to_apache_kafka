@@ -19,7 +19,7 @@
         <scopt.version>3.7.0</scopt.version>
         <scalactic.version>3.0.5</scalactic.version>
         <scalacheck.version>1.14.0</scalacheck.version>
-        <spark.version>3.0.0</spark.version>
+        <spark.version>3.0.1</spark.version>
         <slf4j.version>1.7.16</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
         <jackson-core.version>2.10.0</jackson-core.version>
